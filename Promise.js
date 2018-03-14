@@ -29,7 +29,7 @@ function Promise(excutor) {
         setTimeout(() => {
             // 调用resolve 回调对应onFulfilled函数
             if (that.status === PENDING) {
-                // 只能由pedning状态 => fulfilled状态 (避免调用多次resolve reject)
+                // 只能由pending状态 => fulfilled状态 (避免调用多次resolve reject)
                 that.status = FULFILLED;
                 that.value = value;
                 that.onFulfilledCallbacks.forEach(cb => cb(that.value));
@@ -41,7 +41,7 @@ function Promise(excutor) {
         setTimeout(() => {
             // 调用reject 回调对应onRejected函数
             if (that.status === PENDING) {
-                // 只能由pedning状态 => rejected状态 (避免调用多次resolve reject)
+                // 只能由pending状态 => rejected状态 (避免调用多次resolve reject)
                 that.status = REJECTED;
                 that.reason = reason;
                 that.onRejectedCallbacks.forEach(cb => cb(that.reason));
@@ -144,7 +144,7 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
     // 总之都是 让then方法异步执行 也就是确保onFulfilled/onRejected异步执行
 
     // 如下面这种情景 多次调用p1.then
-    // p1.then((value) => { // 此时p1.status 由pedding状态 => fulfilled状态
+    // p1.then((value) => { // 此时p1.status 由pending状态 => fulfilled状态
     //     console.log(value); // resolve
     //     // console.log(p1.status); // fulfilled
     //     p1.then(value => { // 再次p1.then 这时已经为fulfilled状态 走的是fulfilled状态判断里的逻辑 所以我们也要确保判断里面onFuilled异步执行
